@@ -1,0 +1,52 @@
+<!-- Plugin Configuration File. Read more: https://plugins.jetbrains.com/docs/intellij/plugin-configuration-file.html -->
+<idea-plugin>
+    <id>me.vennen.spyglassmc</id>
+    <name>SpyglassMC</name>
+    <vendor>JulianVennen</vendor>
+
+    <depends>com.intellij.modules.platform</depends>
+    <depends>com.intellij.modules.json</depends>
+    <depends>org.jetbrains.plugins.textmate</depends>
+
+    <extensions defaultExtensionNs="com.intellij">
+        <!-- Textmate language definitions -->
+        <textmate.bundleProvider implementation="me.vennen.spyglassmc.McMetaTextMateBundleProvider"/>
+
+        <!-- File type -->
+        <fileType name="McFunction" implementationClass="me.vennen.spyglassmc.language.McFunctionFileType" fieldName="INSTANCE" language="mcfunction" extensions="mcfunction"/>
+
+        <!-- LSP4IntelliJ -->
+        <applicationInitializedListener implementation="me.vennen.spyglassmc.lsp.SpyglassPreloadingActivity"/>
+        <applicationService serviceImplementation="org.wso2.lsp4intellij.IntellijLanguageClient"/>
+        <editorFactoryListener implementation="org.wso2.lsp4intellij.listeners.LSPEditorListener"/>
+        <fileDocumentManagerListener implementation="org.wso2.lsp4intellij.listeners.LSPFileDocumentManagerListener"/>
+        <notificationGroup id="lsp" displayType="STICKY_BALLOON"/>
+        <notificationGroup id="LSPProgressNotification" displayType="NONE" />
+        <statusBarWidgetFactory implementation="org.wso2.lsp4intellij.statusbar.LSPServerStatusWidgetFactory" id="org.wso2.lsp4intellij.statusbar.LSPServerStatusWidgetFactory" order="first" />
+        <completion.contributor implementationClass="org.wso2.lsp4intellij.contributors.LSPCompletionContributor" id="org.wso2.lsp4intellij.contributors.LSPCompletionContributor" language="mcfunction"/>
+        <typedHandler implementation="org.wso2.lsp4intellij.listeners.LSPTypedHandler" id="LSPTypedHandler"/>
+        <externalAnnotator id="LSPAnnotator" language="mcfunction" implementationClass="org.wso2.lsp4intellij.contributors.annotator.LSPAnnotator"/>
+        <gotoSymbolContributor implementation="org.wso2.lsp4intellij.contributors.symbol.LSPSymbolContributor" id="LSPSymbolContributor"/>
+        <renameHandler implementation="org.wso2.lsp4intellij.contributors.rename.LSPRenameHandler" id="LSPRenameHandler" order="first"/>
+        <renamePsiElementProcessor implementation="org.wso2.lsp4intellij.contributors.rename.LSPRenameProcessor" id="LSPRenameProcessor" order="first"/>
+        <lang.foldingBuilder language="mcfunction" implementationClass="org.wso2.lsp4intellij.contributors.LSPFoldingRangeProvider" id="LSPFoldingRangeProvider" order="first" />
+    </extensions>
+
+    <extensions defaultExtensionNs="JavaScript.JsonSchema">
+        <ProviderFactory implementation="me.vennen.spyglassmc.schema.SpyglassJsonSchemaProviderFactory"/>
+    </extensions>
+
+    <actions>
+        <action id="org.intellij.sdk.action.QuickDocAction" class="org.wso2.lsp4intellij.actions.LSPQuickDocAction"/>
+        <action class="org.wso2.lsp4intellij.actions.LSPReferencesAction" id="LSPFindUsages">
+            <keyboard-shortcut first-keystroke="shift alt F7" keymap="$default"/>
+        </action>
+    </actions>
+
+    <applicationListeners>
+        <listener class="org.wso2.lsp4intellij.listeners.VFSListener"
+                  topic="com.intellij.openapi.vfs.VirtualFileListener"/>
+        <listener class="org.wso2.lsp4intellij.listeners.LSPProjectManagerListener"
+                  topic="com.intellij.openapi.project.ProjectManagerListener"/>
+    </applicationListeners>
+</idea-plugin>
