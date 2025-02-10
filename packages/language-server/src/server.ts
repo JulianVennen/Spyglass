@@ -97,9 +97,9 @@ connection.onInitialize(async (params) => {
 			} catch (e) {
 				console.error('[sendDiagnostics]', e)
 			}
-		}).on('ready', async () => {
+		})/*.on('ready', async () => {
 			await connection.sendProgress(ls.WorkDoneProgress.type, 'initialize', { kind: 'end' })
-		})
+		})*/
 		await service.project.init()
 	} catch (e) {
 		logger.error('[new Service]', e)
@@ -114,20 +114,20 @@ connection.onInitialize(async (params) => {
 	const ans: ls.InitializeResult = {
 		serverInfo: { name: 'Spyglass Language Server' },
 		capabilities: {
-			codeActionProvider: {},
-			colorProvider: {},
+			codeActionProvider: true,
+			colorProvider: true,
 			completionProvider: { triggerCharacters: service.project.meta.getTriggerCharacters() },
-			declarationProvider: {},
-			definitionProvider: {},
-			implementationProvider: {},
+			declarationProvider: true,
+			definitionProvider: true,
+			implementationProvider: true,
 			// TODO: re-enable this
-			// documentFormattingProvider: {},
-			referencesProvider: {},
-			typeDefinitionProvider: {},
-			documentHighlightProvider: {},
+			// documentFormattingProvider: true,
+			referencesProvider: true,
+			typeDefinitionProvider: true,
+			documentHighlightProvider: true,
 			documentSymbolProvider: { label: 'Spyglass' },
-			hoverProvider: {},
-			inlayHintProvider: {},
+			hoverProvider: true,
+			inlayHintProvider: true,
 			semanticTokensProvider: {
 				documentSelector: toLS.documentSelector(service.project.meta),
 				legend: toLS.semanticTokensLegend(),
@@ -136,7 +136,7 @@ connection.onInitialize(async (params) => {
 			},
 			signatureHelpProvider: { triggerCharacters: [' '] },
 			textDocumentSync: { change: ls.TextDocumentSyncKind.Incremental, openClose: true },
-			workspaceSymbolProvider: {},
+			workspaceSymbolProvider: true,
 			experimental: { spyglassmc: customCapabilities },
 		},
 	}

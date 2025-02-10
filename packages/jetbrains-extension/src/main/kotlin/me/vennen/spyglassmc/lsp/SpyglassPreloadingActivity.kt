@@ -5,17 +5,19 @@ import com.intellij.ide.ApplicationInitializedListener
 import com.intellij.openapi.application.PluginPathManager
 import org.wso2.lsp4intellij.IntellijLanguageClient
 import org.wso2.lsp4intellij.client.languageserver.serverdefinition.RawCommandServerDefinition
+import org.wso2.lsp4intellij.requests.Timeouts
 
 
 @Suppress("UnstableApiUsage")
 class SpyglassPreloadingActivity : ApplicationInitializedListener {
     override suspend fun execute() {
         IntellijLanguageClient.addServerDefinition(
-            RawCommandServerDefinition(
-                "mcfunction,mcdoc,snbt,mcmeta,json",
-                arrayOf("node", "--no-warnings", "--experimental-default-type=module", getLspPath(), "--stdio")
-            )
+            SpyglassServerDefinition(getLspPath())
         )
+
+        val timeouts = IntellijLanguageClient.getTimeouts()
+        timeouts[Timeouts.INIT] = 100_000
+        timeouts[Timeouts.SHUTDOWN] = 10_000
     }
 
     private fun getLspPath(): String {
