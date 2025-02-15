@@ -1,0 +1,30 @@
+{
+    "name": "datapack-language-server",
+    "version": "0.1.0-PLACEHOLDER",
+    "author": "Spyglass Contributors",
+    "license": "MIT",
+    "private": true,
+    "scripts": {
+        "build": "wireit",
+        "release": "./gradlew publishPlugins",
+        "release:dry": "echo \"DO NOT PUBLISH (DRY)\"",
+        "watch": "npm run build --watch"
+    },
+    "wireit": {
+        "build": {
+            "command": "./gradlew buildPlugin",
+            "dependencies": [
+                "../..:build:packages"
+            ],
+            "files": [
+                "src/**/*.kt",
+                "src/resources/**/*",
+                "*.gradle.kts",
+                "../language-server/lib/server.js"
+            ],
+            "output": [
+                "build/distributions/*.zip"
+            ]
+        }
+    }
+}

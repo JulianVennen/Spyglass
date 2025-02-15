@@ -34,12 +34,14 @@
 		"build": {
 			"dependencies": [
 				"./packages/playground:build",
+				"./packages/jetbrains-extension:build",
 				"./packages/vscode-extension:build"
 			]
 		},
 		"build:dev": {
 			"dependencies": [
 				"./packages/playground:build:dev",
+				"./packages/jetbrains-extension:build",
 				"./packages/vscode-extension:build:dev"
 			]
 		},
