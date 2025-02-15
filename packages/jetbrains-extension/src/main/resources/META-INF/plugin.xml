@@ -1,0 +1,19 @@
+<!-- Plugin Configuration File. Read more: https://plugins.jetbrains.com/docs/intellij/plugin-configuration-file.html -->
+<idea-plugin>
+    <id>com.spyglassmc</id>
+    <name>Datapack Helper Plus by Spyglass</name>
+    <vendor>SpyglassMC</vendor>
+
+    <depends>com.intellij.modules.ultimate</depends>
+    <depends>JavaScript</depends>
+    <depends>org.jetbrains.plugins.textmate</depends>
+
+    <extensions defaultExtensionNs="com.intellij">
+        <platform.lsp.serverSupportProvider implementation="com.spyglassmc.lsp.SpyglassLspServerSupportProvider"/>
+        <textmate.bundleProvider implementation="com.spyglassmc.McMetaTextMateBundleProvider"/>
+    </extensions>
+
+    <extensions defaultExtensionNs="JavaScript.JsonSchema">
+        <ProviderFactory implementation="com.spyglassmc.schema.SpyglassJsonSchemaProviderFactory"/>
+    </extensions>
+</idea-plugin>
